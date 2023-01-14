@@ -223,6 +223,19 @@ class Report {
   }
 }
 
+function formatDate(date) {
+  let d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) 
+    month = '0' + month;
+  if (day.length < 2) 
+    day = '0' + day;
+
+  return [day, month, year].join('-');
+}
 
 class CSVReport {
   constructor(resultCards) {
@@ -237,7 +250,7 @@ class CSVReport {
       'Итого за период'
     ]
   }
-  generateCSV(filepath = `reports/${new Date()}.csv`) {
+  generateCSV(filepath = `reports/${formatDate(new Date())}.csv`) {
     let data = this._getCSVLabels()
     let resultCardArrays = this.resultCards.map(card => [
       card.name,
@@ -291,6 +304,7 @@ class CSVReport {
 }
 
 (async () => {
+  console.log('Start report genarate')
   const report = new Report({
     apiKey: process.env.API_KEY,
     oauthToken: process.env.OAUTH_TOKEN,
